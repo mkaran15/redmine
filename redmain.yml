@@ -1,0 +1,32 @@
+version: '3'
+services:
+ 
+  sqlos:
+    image: mysql:5.7
+    volumes:
+      - mysql:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_USER: karan
+      MYSQL_PASSWORD: redhat
+      MYSQL_DATABASE: redmine
+ 
+  redmine:
+    image: redmine:latest
+    restart: always
+    depends_on:
+      - sqlos
+    ports:
+      - 3000:3000
+    volumes:
+      - redmine:/usr/src/redmine/files
+    environment:
+      REDMINE_DB_MYSQL: sqlos
+      REDMINE_DB_USERNAME: karan
+      REDMINE_DB_PASSWORD: redhat
+      REDMINE_DB_DATABASE: redmine
+volumes:
+  mysql: 
+  redmine:
+
